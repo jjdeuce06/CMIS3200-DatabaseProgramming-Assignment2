@@ -1,0 +1,114 @@
+SQL> DROP TABLE DEPARTMENT CASCADE CONSTRAINTS;
+
+Table dropped.
+
+SQL> DROP TABLE REPRESENTATIVES CASCADE CONSTRAINTS;
+
+Table dropped.
+
+SQL> DROP TABLE CUSTOMER CASCADE CONSTRAINTS;
+
+Table dropped.
+
+SQL> DROP TABLE INVOICE CASCADE CONSTRAINTS;
+
+Table dropped.
+
+SQL> DROP TABLE INVOICE_LINE CASCADE CONSTRAINTS;
+
+Table dropped.
+
+SQL> 
+SQL> 
+SQL> 
+SQL> CREATE TABLE DEPARTMENT
+  2  	(department_code NUMBER(6),
+  3  	 department_name VARCHAR2(100) NOT NULL,
+  4       department_location VARCHAR2(200) NOT NULL,
+  5  	 CONSTRAINT department_code_id PRIMARY KEY (department_code));
+
+Table created.
+
+SQL> 
+SQL> CREATE TABLE REPRESENTATIVES
+  2  	(rep_code NUMBER(6),
+  3  	 department_code NUMBER(6) NOT NULL,
+  4  	 rep_lname VARCHAR2(50)NOT NULL,
+  5  	 CONSTRAINT rep_code_id PRIMARY KEY(rep_code),
+  6  	 CONSTRAINT rep_department_code_fk FOREIGN KEY (department_code) REFERENCES DEPARTMENT(department_code));
+
+Table created.
+
+SQL> 
+SQL> CREATE TABLE CUSTOMER
+  2  	(cust_code NUMBER(6),
+  3  	 cust_name VARCHAR2(50) NOT NULL,
+  4  	 cust_address VARCHAR2(100) NOT NULL,
+  5  	 CONSTRAINT cust_code_id PRIMARY KEY (cust_code));
+
+Table created.
+
+SQL> 
+SQL> CREATE TABLE INVOICE
+  2  	(inv_num NUMBER(6),
+  3  	 rep_code NUMBER(6) NOT NULL,
+  4  	 cust_code NUMBER(6) NOT NULL,
+  5  	 inv_amt NUMBER(10) NOT NULL,
+  6  	 CONSTRAINT inv_num_pk PRIMARY KEY (inv_num),
+  7  	 CONSTRAINT invoice_rep_code_id FOREIGN KEY(rep_code) REFERENCES REPRESENTATIVES(rep_code),
+  8  	 CONSTRAINT invoice_cust_code_id FOREIGN KEY (cust_code) REFERENCES CUSTOMER(cust_code));
+
+Table created.
+
+SQL> 
+SQL> CREATE TABLE INVOICE_LINE
+  2  	(inv_num NUMBER(6),
+  3  	 inv_line_num NUMBER(6),
+  4  	 item_code VARCHAR2(20) NOT NULL,
+  5  	 CONSTRAINT inv_num_fk_id FOREIGN KEY(inv_num) REFERENCES INVOICE(inv_num),
+  6  	 CONSTRAINT invoice_num_id_line_id PRIMARY KEY (inv_num, inv_line_num));
+
+Table created.
+
+SQL> 
+SQL> 
+SQL> DESCRIBE DEPARTMENT;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ DEPARTMENT_CODE                           NOT NULL NUMBER(6)
+ DEPARTMENT_NAME                           NOT NULL VARCHAR2(100)
+ DEPARTMENT_LOCATION                       NOT NULL VARCHAR2(200)
+
+SQL> DESCRIBE REPRESENTATIVES;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ REP_CODE                                  NOT NULL NUMBER(6)
+ DEPARTMENT_CODE                           NOT NULL NUMBER(6)
+ REP_LNAME                                 NOT NULL VARCHAR2(50)
+
+SQL> DESCRIBE CUSTOMER;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ CUST_CODE                                 NOT NULL NUMBER(6)
+ CUST_NAME                                 NOT NULL VARCHAR2(50)
+ CUST_ADDRESS                              NOT NULL VARCHAR2(100)
+
+SQL> DESCRIBE INVOICE;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ INV_NUM                                   NOT NULL NUMBER(6)
+ REP_CODE                                  NOT NULL NUMBER(6)
+ CUST_CODE                                 NOT NULL NUMBER(6)
+ INV_AMT                                   NOT NULL NUMBER(10)
+
+SQL> DESCRIBE INVOICE_LINE;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ INV_NUM                                   NOT NULL NUMBER(6)
+ INV_LINE_NUM                              NOT NULL NUMBER(6)
+ ITEM_CODE                                 NOT NULL VARCHAR2(20)
+
+SQL> 
+SQL> 
+SQL> 
+SQL> 	 spool off;
